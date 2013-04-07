@@ -8,6 +8,13 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import java.awt.GridLayout;
+import javax.swing.SwingConstants;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.Component;
 
 public class loginPanel extends JPanel {
 	private JTextField txtUsername;
@@ -18,54 +25,86 @@ public class loginPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public loginPanel() {
-		SpringLayout springLayout = new SpringLayout();
-		setLayout(springLayout);
-		
-		txtUsername = new JTextField();
-		springLayout.putConstraint(SpringLayout.EAST, txtUsername, -65, SpringLayout.EAST, this);
-		add(txtUsername);
-		txtUsername.setColumns(10);
-		
-		pwdPassword = new JPasswordField();
-		springLayout.putConstraint(SpringLayout.WEST, pwdPassword, 0, SpringLayout.WEST, txtUsername);
-		springLayout.putConstraint(SpringLayout.EAST, pwdPassword, -65, SpringLayout.EAST, this);
-		add(pwdPassword);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{30, 150, 150, 30, 0};
+		gridBagLayout.rowHeights = new int[]{43, 43, 43, 0, 43, 0, 0};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		setLayout(gridBagLayout);
 		
 		JLabel lblUserId = new JLabel("User ID:");
-		springLayout.putConstraint(SpringLayout.WEST, lblUserId, 60, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, txtUsername, -6, SpringLayout.NORTH, lblUserId);
-		springLayout.putConstraint(SpringLayout.NORTH, lblUserId, 33, SpringLayout.NORTH, this);
-		add(lblUserId);
+		lblUserId.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_lblUserId = new GridBagConstraints();
+		gbc_lblUserId.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblUserId.insets = new Insets(0, 0, 5, 5);
+		gbc_lblUserId.gridx = 1;
+		gbc_lblUserId.gridy = 1;
+		add(lblUserId, gbc_lblUserId);
+		
+		txtUsername = new JTextField();
+		txtUsername.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_txtUsername = new GridBagConstraints();
+		gbc_txtUsername.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtUsername.insets = new Insets(0, 0, 5, 5);
+		gbc_txtUsername.gridx = 2;
+		gbc_txtUsername.gridy = 1;
+		add(txtUsername, gbc_txtUsername);
+		txtUsername.setColumns(10);
 		
 		JLabel lblPassword = new JLabel("Password:");
-		springLayout.putConstraint(SpringLayout.NORTH, pwdPassword, -6, SpringLayout.NORTH, lblPassword);
-		springLayout.putConstraint(SpringLayout.NORTH, lblPassword, 23, SpringLayout.SOUTH, lblUserId);
-		springLayout.putConstraint(SpringLayout.WEST, lblPassword, 0, SpringLayout.WEST, lblUserId);
-		add(lblPassword);
+		lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
+		gbc_lblPassword.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblPassword.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPassword.gridx = 1;
+		gbc_lblPassword.gridy = 2;
+		add(lblPassword, gbc_lblPassword);
+		
+		pwdPassword = new JPasswordField();
+		pwdPassword.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_pwdPassword = new GridBagConstraints();
+		gbc_pwdPassword.fill = GridBagConstraints.HORIZONTAL;
+		gbc_pwdPassword.insets = new Insets(0, 0, 5, 5);
+		gbc_pwdPassword.gridx = 2;
+		gbc_pwdPassword.gridy = 2;
+		add(pwdPassword, gbc_pwdPassword);
 		
 		JRadioButton rdbtnFaculty = new JRadioButton("Faculty");
-		springLayout.putConstraint(SpringLayout.NORTH, rdbtnFaculty, 22, SpringLayout.SOUTH, lblPassword);
-		springLayout.putConstraint(SpringLayout.WEST, rdbtnFaculty, 77, SpringLayout.WEST, this);
+		rdbtnFaculty.setHorizontalAlignment(SwingConstants.CENTER);
 		buttonGroup.add(rdbtnFaculty);
-		add(rdbtnFaculty);
+		GridBagConstraints gbc_rdbtnFaculty = new GridBagConstraints();
+		gbc_rdbtnFaculty.fill = GridBagConstraints.BOTH;
+		gbc_rdbtnFaculty.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnFaculty.gridx = 1;
+		gbc_rdbtnFaculty.gridy = 3;
+		add(rdbtnFaculty, gbc_rdbtnFaculty);
 		
 		JRadioButton rdbtnStudent = new JRadioButton("Student");
-		springLayout.putConstraint(SpringLayout.NORTH, rdbtnStudent, 0, SpringLayout.NORTH, rdbtnFaculty);
-		springLayout.putConstraint(SpringLayout.WEST, rdbtnStudent, 20, SpringLayout.EAST, rdbtnFaculty);
+		rdbtnStudent.setHorizontalAlignment(SwingConstants.CENTER);
 		buttonGroup.add(rdbtnStudent);
-		add(rdbtnStudent);
+		GridBagConstraints gbc_rdbtnStudent = new GridBagConstraints();
+		gbc_rdbtnStudent.fill = GridBagConstraints.BOTH;
+		gbc_rdbtnStudent.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnStudent.gridx = 2;
+		gbc_rdbtnStudent.gridy = 3;
+		add(rdbtnStudent, gbc_rdbtnStudent);
 		
 		JButton btnOk = new JButton("OK");
-		springLayout.putConstraint(SpringLayout.NORTH, btnOk, 23, SpringLayout.SOUTH, rdbtnFaculty);
-		springLayout.putConstraint(SpringLayout.WEST, btnOk, 60, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.EAST, btnOk, -198, SpringLayout.EAST, this);
-		add(btnOk);
+		GridBagConstraints gbc_btnOk = new GridBagConstraints();
+		gbc_btnOk.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnOk.insets = new Insets(0, 0, 5, 5);
+		gbc_btnOk.gridx = 1;
+		gbc_btnOk.gridy = 4;
+		add(btnOk, gbc_btnOk);
 		
 		JButton btnCancel = new JButton("Cancel");
-		springLayout.putConstraint(SpringLayout.NORTH, btnCancel, 0, SpringLayout.NORTH, btnOk);
-		springLayout.putConstraint(SpringLayout.WEST, btnCancel, 22, SpringLayout.EAST, btnOk);
-		springLayout.putConstraint(SpringLayout.EAST, btnCancel, -76, SpringLayout.EAST, this);
-		add(btnCancel);
+		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
+		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
+		gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnCancel.gridx = 2;
+		gbc_btnCancel.gridy = 4;
+		add(btnCancel, gbc_btnCancel);
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txtUsername, pwdPassword, rdbtnFaculty, rdbtnStudent, btnOk, btnCancel}));
 
 	}
 }
