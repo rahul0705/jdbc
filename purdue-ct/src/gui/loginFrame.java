@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.Enumeration;
 
 @SuppressWarnings("serial")
@@ -126,8 +127,6 @@ public class loginFrame extends JFrame {
 					Statement stat = conn.createStatement();
 					String username = txtUsername.getText();
 					char[] password = pwdPassword.getPassword();
-					System.out.println(username);
-					System.out.println(password);
 					String table = "";
 					for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
 						AbstractButton button = buttons.nextElement();
@@ -139,22 +138,27 @@ public class loginFrame extends JFrame {
 						}
 					}
 					String query = "select PASSWORD, NAME" +
-							"from " + table +
-							"where USERNAME='" + username + "'";
+							" from " + table +
+							" where USERNAME='" + username + "'";
 					ResultSet rs = stat.executeQuery(query);
+					boolean wrong = true;
 					while (rs.next()) {
 						String checkPass = rs.getString("PASSWORD");
 						String name = rs.getString("NAME");
-						if(checkPass.equals(password)){
+						if(Arrays.equals(checkPass.toCharArray(), password)){
+							wrong = false;
 							dispose();
 							toolsFrame frame = new toolsFrame(conn, name);
 							frame.setVisible(true);
+							break;
 						}
 					}
-					JOptionPane.showMessageDialog(loginFrame.this, "Username/Password incorrect");
-					txtUsername.setText("");
-					pwdPassword.setText("");
-					buttonGroup.clearSelection();
+					if(wrong){
+						JOptionPane.showMessageDialog(loginFrame.this, "Username/Password incorrect");
+						txtUsername.setText("");
+						pwdPassword.setText("");
+						buttonGroup.clearSelection();
+					}
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					while(e != null){

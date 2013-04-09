@@ -43,7 +43,7 @@ public class proj3 {
 			Statement stat = conn.createStatement();
 			String drop = "DROP TABLE STUDENTS";
 			stat.execute(drop);
-			String create = "CREATE TABLE STUDENTS (sid INT, name VARCHAR(100), username VARCHAR(20), password VARCHAR(20))";
+			String create = "CREATE TABLE STUDENTS (sid INT, name VARCHAR(30), username VARCHAR(20), password VARCHAR(20))";
 			stat.execute(create);
 			BufferedReader in = new BufferedReader(new FileReader("Input/Students.data"));
 			String str;
@@ -73,7 +73,7 @@ public class proj3 {
 			Statement stat = conn.createStatement();
 			String drop = "DROP TABLE FACULTY";
 			stat.execute(drop);
-			String create = "CREATE TABLE FACULTY (fid INT, name VARCHAR(100), username VARCHAR(20), password VARCHAR(20))";
+			String create = "CREATE TABLE FACULTY (fid INT, name VARCHAR(30), username VARCHAR(20), password VARCHAR(20))";
 			stat.execute(create);
 			BufferedReader in = new BufferedReader(new FileReader("Input/Faculty.data"));
 			String str;
@@ -81,6 +81,36 @@ public class proj3 {
 				if(str.startsWith("#"))
 					continue;
 				stat.execute("INSERT INTO FACULTY VALUES (" + str + ")");
+			}
+			in.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			while(e != null){
+				e.printStackTrace();
+				e = e.getNextException();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private static void createClassTable(Connection conn){
+		try {
+			Statement stat = conn.createStatement();
+			//String drop = "DROP TABLE CLASS";
+			//stat.execute(drop);
+			String create = "CREATE TABLE CLASS (cid INT, name VARCHAR(30), semester VARCHAR(20), year INT, meets_at DATE, room VARCHAR(20), fid INT)";
+			stat.execute(create);
+			BufferedReader in = new BufferedReader(new FileReader("Input/Class.data"));
+			String str;
+			while((str = in.readLine()) != null){
+				if(str.startsWith("#"))
+					continue;
+				stat.execute("INSERT INTO CLASS VALUES (" + str + ")");
 			}
 			in.close();
 		} catch (SQLException e) {
@@ -110,7 +140,7 @@ public class proj3 {
 		String drivers = props.getProperty("connection.driver_class");
 		if(drivers != null)
 			System.setProperty("jdbc.drivers", drivers);
-		String url="jdbc:oracle:thin:@csora";
+		String url="jdbc:oracle:thin:@claros.cs.purdue.edu:1524:strep";
 		String username="rmohanda";
 		String password="AKmVy2dn";
 		return DriverManager.getConnection(url, username, password);

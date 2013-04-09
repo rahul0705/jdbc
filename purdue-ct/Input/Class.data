@@ -1,0 +1,5 @@
+#cid, 'name', 'semester', year, meets_at, 'room', fid
+1, 'cs348', 'spring', 2012, to_date('11:30','HH:MI'), 'LWSN B151', 3
+2, 'cs426', 'spring', 2012, to_date('16:30','HH:MI'), 'HASS G060', 2
+3, 'cs448', 'spring', 2012, to_date('09:30','HH:MI'), 'LWSN B155', 7
+4, 'cs490', 'spring', 2012, to_date('08:30','HH:MI'), 'LWSN B143', 5
