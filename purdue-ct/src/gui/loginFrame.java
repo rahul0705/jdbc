@@ -1,28 +1,27 @@
 package gui;
 
-import java.awt.EventQueue;
-
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-
 import org.eclipse.wb.swing.FocusTraversalOnArray;
-
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Enumeration;
 
 @SuppressWarnings("serial")
@@ -35,7 +34,7 @@ public class loginFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -46,12 +45,12 @@ public class loginFrame extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public loginFrame() {
+	public loginFrame(final Connection conn) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 360, 230);
 		contentPane = new JPanel();
@@ -122,20 +121,47 @@ public class loginFrame extends JFrame {
 
 		JButton btnOk = new JButton("OK");
 		btnOk.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String username = txtUsername.getText();
-				char[] password = pwdPassword.getPassword();
-				System.out.println(username);
-				System.out.println(password);
-				for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
-					AbstractButton button = buttons.nextElement();
-					if (button.isSelected()) {
-						System.out.println(button.getText());
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					Statement stat = conn.createStatement();
+					String username = txtUsername.getText();
+					char[] password = pwdPassword.getPassword();
+					System.out.println(username);
+					System.out.println(password);
+					String table = "";
+					for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+						AbstractButton button = buttons.nextElement();
+						if (button.isSelected()) {
+							if(button.getText().equals("Student"))
+								table = "STUDENTS";
+							else if(button.getText().equals("Faculty"))
+								table = "FACULTY";
+						}
+					}
+					String query = "select PASSWORD, NAME" +
+							"from " + table +
+							"where USERNAME='" + username + "'";
+					ResultSet rs = stat.executeQuery(query);
+					while (rs.next()) {
+						String checkPass = rs.getString("PASSWORD");
+						String name = rs.getString("NAME");
+						if(checkPass.equals(password)){
+							dispose();
+							toolsFrame frame = new toolsFrame(conn, name);
+							frame.setVisible(true);
+						}
+					}
+					JOptionPane.showMessageDialog(loginFrame.this, "Username/Password incorrect");
+					txtUsername.setText("");
+					pwdPassword.setText("");
+					buttonGroup.clearSelection();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					while(e != null){
+						e.printStackTrace();
+						e = e.getNextException();
 					}
 				}
-				dispose();
-				toolsFrame frame = new toolsFrame();
-				frame.setVisible(true);
 			}
 		});
 		GridBagConstraints gbc_btnOk = new GridBagConstraints();
@@ -147,7 +173,7 @@ public class loginFrame extends JFrame {
 
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			}
 		});

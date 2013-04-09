@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.sql.Connection;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,7 +18,7 @@ public class toolsFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -28,12 +29,12 @@ public class toolsFrame extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public toolsFrame() {
+	public toolsFrame(Connection conn, String name) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 300, 200);
 		contentPane = new JPanel();
@@ -45,7 +46,7 @@ public class toolsFrame extends JFrame {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
-		JLabel lblWelcome = new JLabel("Welcome");
+		JLabel lblWelcome = new JLabel("Welcome " + name);
 		GridBagConstraints gbc_lblWelcome = new GridBagConstraints();
 		gbc_lblWelcome.insets = new Insets(0, 0, 5, 0);
 		gbc_lblWelcome.gridx = 0;

@@ -1,7 +1,10 @@
 package backend;
 
+import gui.loginFrame;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,112 +14,91 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class proj3 {
-	public static void main(String args[])
-	{
-		NumberOfRecords=500;
-		NumberOfDb=5;
+	private static int NumberOfRecords;
+	private static int NumberOfDb;
+	
+	public static void main(String args[]){
+		NumberOfRecords = 500;
+		NumberOfDb = 5;
 		
-		createdb();
+		Connection conn = null;
+		try {
+			conn = getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		createStudentsTable(conn);
+		createFacultyTable(conn);
 		
-		System.exit(0);
+		loginFrame l = new loginFrame(conn);
+		l.setVisible(true);
 	}
 	
-	private static void createdb()
-	{
-		try
-		{
-			Connection conn=getConnection();
-			Statement stat= conn.createStatement();
-			for(int count=1;count<=NumberOfDb;count++)
-			{
-				String create;
-				//String nameofdb="Records_all";
-				String nameofdb="Records_"+(count*NumberOfRecords);
-				String drop="DROP TABLE "+nameofdb;
-				stat.execute(drop);
-				create="CREATE TABLE "+nameofdb+" (Age INT, workclass VARCHAR(100), fnlwgt INT, education VARCHAR(100), education_num INT, marital_status VARCHAR(100), occupation VARCHAR(100), relationship VARCHAR(100), race VARCHAR(100), sex VARCHAR(100), capital_gain INT, capital_loss INT, hours_per_week INT, native_country VARCHAR(100), income VARCHAR(100))";
-				//System.out.println(create);
-				stat.execute(create);
-				
-				int recordnumber=count*NumberOfRecords;
-				int recordcount=0;
-				boolean questionmark=false;
-				BufferedReader in = new BufferedReader(new FileReader("adult.data"));
-				String str;
-				String[] small=new String[15];
-				while ((str = in.readLine()) != null) 
-				{
-					char[] temp=new char[str.length()];
-					int j=0;
-					int k=0;
-					for(int i=0;i<str.length();i++)
-					{
-						if(str.charAt(i)==','||i==str.length()-1)
-						{
-							small[k]=new String(temp,0,j);
-							k++;
-							j=0;
-							i++;
-							temp=new char[str.length()];
-						}
-						else if(str.charAt(i)==' ')
-						{
-							continue;
-						}
-						else if(str.charAt(i)=='?')
-						{
-							questionmark=true;
-							break;
-						}
-						else
-						{
-							temp[j]=str.charAt(i);
-							j++;
-						}
-					}
-					if(questionmark==true)
-					{
-						questionmark=false;
-						continue;
-					}
-					String query="";
-					for(int i=0;i<k-1;i++)
-					{
-						query=query+"'";
-						query=query+small[i];
-						query=query+"'";
-						query=query+", ";
-					}
-					query=query+"'";
-					if(k==0) break;
-					query=query+small[k-1];
-					query=query+"'";
-					stat.execute("INSERT INTO "+nameofdb+" VALUES ("+query+")");
-					
-					recordcount++;
-					if(recordcount==recordnumber) break;
-				}
-				System.out.println(recordcount+" Records have been inserted!");
+	private static void createStudentsTable(Connection conn){
+		try {
+			Statement stat = conn.createStatement();
+			String drop = "DROP TABLE STUDENTS";
+			stat.execute(drop);
+			String create = "CREATE TABLE STUDENTS (sid INT, name VARCHAR(100), username VARCHAR(20), password VARCHAR(20))";
+			stat.execute(create);
+			BufferedReader in = new BufferedReader(new FileReader("Input/Students.data"));
+			String str;
+			while((str = in.readLine()) != null){
+				if(str.startsWith("#"))
+					continue;
+				stat.execute("INSERT INTO STUDENTS VALUES (" + str + ")");
 			}
-			stat.close();	
-			conn.close();
-		}
-		catch(SQLException ex)
-		{
-			while(ex!=null)
-			{
-				ex.printStackTrace();
-				ex=ex.getNextException();
+			in.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			while(e != null){
+				e.printStackTrace();
+				e = e.getNextException();
 			}
-		}
-		catch(IOException ex)
-		{
-			ex.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
-	public static Connection getConnection() throws SQLException, IOException
-	{
+	private static void createFacultyTable(Connection conn){
+		try {
+			Statement stat = conn.createStatement();
+			String drop = "DROP TABLE FACULTY";
+			stat.execute(drop);
+			String create = "CREATE TABLE FACULTY (fid INT, name VARCHAR(100), username VARCHAR(20), password VARCHAR(20))";
+			stat.execute(create);
+			BufferedReader in = new BufferedReader(new FileReader("Input/Faculty.data"));
+			String str;
+			while((str = in.readLine()) != null){
+				if(str.startsWith("#"))
+					continue;
+				stat.execute("INSERT INTO FACULTY VALUES (" + str + ")");
+			}
+			in.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			while(e != null){
+				e.printStackTrace();
+				e = e.getNextException();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static Connection getConnection() throws SQLException, IOException{
 		Properties props = new Properties();
 		FileInputStream in = new FileInputStream("Input/jdbc.properties");
 		props.load(in);
@@ -134,7 +116,4 @@ public class proj3 {
 		return DriverManager.getConnection(url, username, password);
 			
 	}
-	
-	private static int NumberOfRecords;
-	private static int NumberOfDb;
 }
