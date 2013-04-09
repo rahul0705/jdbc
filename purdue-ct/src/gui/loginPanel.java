@@ -1,5 +1,6 @@
 package gui;
 
+import javax.swing.AbstractButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
@@ -15,6 +16,9 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.util.Enumeration;
 
 public class loginPanel extends JPanel {
 	private JTextField txtUsername;
@@ -26,8 +30,8 @@ public class loginPanel extends JPanel {
 	 */
 	public loginPanel() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{30, 150, 150, 30, 0};
-		gridBagLayout.rowHeights = new int[]{43, 43, 43, 0, 43, 0, 0};
+		gridBagLayout.columnWidths = new int[]{30, 150, 150, 30};
+		gridBagLayout.rowHeights = new int[]{10, 43, 43, 43, 43};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
@@ -90,6 +94,20 @@ public class loginPanel extends JPanel {
 		add(rdbtnStudent, gbc_rdbtnStudent);
 		
 		JButton btnOk = new JButton("OK");
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String username = txtUsername.getText();
+				char[] password = pwdPassword.getPassword();
+				System.out.println(username);
+				System.out.println(password);
+				for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+		            AbstractButton button = buttons.nextElement();
+		            if (button.isSelected()) {
+		                System.out.println(button.getText());
+		            }
+		        }
+			}
+		});
 		GridBagConstraints gbc_btnOk = new GridBagConstraints();
 		gbc_btnOk.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnOk.insets = new Insets(0, 0, 5, 5);
@@ -98,6 +116,11 @@ public class loginPanel extends JPanel {
 		add(btnOk, gbc_btnOk);
 		
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
