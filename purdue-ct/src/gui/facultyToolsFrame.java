@@ -64,7 +64,7 @@ public class facultyToolsFrame extends JFrame {
 		gbc_separator.gridy = 0;
 		contentPane.add(separator, gbc_separator);
 		
-		JLabel lblWelcome = new JLabel("Welcome");
+		JLabel lblWelcome = new JLabel("Welcome " + name);
 		GridBagConstraints gbc_lblWelcome = new GridBagConstraints();
 		gbc_lblWelcome.insets = new Insets(0, 0, 5, 0);
 		gbc_lblWelcome.gridx = 0;
