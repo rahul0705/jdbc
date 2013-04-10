@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -8,11 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -91,7 +86,7 @@ public class studentToolsFrame extends JFrame {
 					String[] cols = {"Class Name", "Type", "Weight", "DEADLINE"};
 					while (rs.next()) {
 						String[] subData = {"" + rs.getInt("CID"), rs.getString("TYPE"),
-								"" + rs.getInt("WEIGHT"), "" + rs.getDate("DEADLINE"),};
+								"" + rs.getInt("WEIGHT"), "" + rs.getDate("DEADLINE")};
 						data.add(subData);
 					}
 					String[][] temp = new String[data.size()][4];

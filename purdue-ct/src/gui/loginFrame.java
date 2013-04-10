@@ -128,16 +128,21 @@ public class loginFrame extends JFrame {
 					String username = txtUsername.getText();
 					char[] password = pwdPassword.getPassword();
 					String table = "";
+					String idName = "";
 					for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
 						AbstractButton button = buttons.nextElement();
 						if (button.isSelected()) {
-							if(button.getText().equals("Student"))
+							if(button.getText().equals("Student")){
 								table = "STUDENTS";
-							else if(button.getText().equals("Faculty"))
+								idName = "SID";
+							}
+							else if(button.getText().equals("Faculty")){
 								table = "FACULTY";
+								idName = "FID";
+							}
 						}
 					}
-					String query = "select PASSWORD, NAME, SID" +
+					String query = "select PASSWORD, NAME, " + idName +
 							" from " + table +
 							" where USERNAME='" + username + "'";
 					ResultSet rs = stat.executeQuery(query);
@@ -145,12 +150,17 @@ public class loginFrame extends JFrame {
 					while (rs.next()) {
 						String checkPass = rs.getString("PASSWORD");
 						String name = rs.getString("NAME");
-						int sid = rs.getInt("SID");
+						int id = rs.getInt(idName);
 						if(Arrays.equals(checkPass.toCharArray(), password)){
 							wrong = false;
 							dispose();
-							studentToolsFrame frame = new studentToolsFrame(conn, name, sid);
-							frame.setVisible(true);
+							if(table.equals("STUDENTS")){
+								studentToolsFrame frame = new studentToolsFrame(conn, name, id);
+								frame.setVisible(true);
+							}else if(table.equals("FACULTY")){
+								facultyToolsFrame frame = new facultyToolsFrame(conn, name, id);
+								frame.setVisible(true);
+							}
 							break;
 						}
 					}
