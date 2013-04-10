@@ -14,25 +14,21 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class proj3 {
-	private static int NumberOfRecords;
-	private static int NumberOfDb;
 	
 	public static void main(String args[]){
-		NumberOfRecords = 500;
-		NumberOfDb = 5;
 		
 		Connection conn = null;
 		try {
 			conn = getConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		createStudentsTable(conn);
 		createFacultyTable(conn);
+		createClassTable(conn);
+		createEnrolledTable(conn);
 		
 		loginFrame l = new loginFrame(conn);
 		l.setVisible(true);
@@ -90,10 +86,8 @@ public class proj3 {
 				e = e.getNextException();
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -101,8 +95,8 @@ public class proj3 {
 	private static void createClassTable(Connection conn){
 		try {
 			Statement stat = conn.createStatement();
-			//String drop = "DROP TABLE CLASS";
-			//stat.execute(drop);
+			String drop = "DROP TABLE CLASS";
+			stat.execute(drop);
 			String create = "CREATE TABLE CLASS (cid INT, name VARCHAR(30), semester VARCHAR(20), year INT, meets_at DATE, room VARCHAR(20), fid INT)";
 			stat.execute(create);
 			BufferedReader in = new BufferedReader(new FileReader("Input/Class.data"));
@@ -114,16 +108,40 @@ public class proj3 {
 			}
 			in.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			while(e != null){
 				e.printStackTrace();
 				e = e.getNextException();
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private static void createEnrolledTable(Connection conn){
+		try {
+			Statement stat = conn.createStatement();
+			String drop = "DROP TABLE Enrolled";
+			stat.execute(drop);
+			String create = "CREATE TABLE Enrolled (cid INT, sid INT)";
+			stat.execute(create);
+			BufferedReader in = new BufferedReader(new FileReader("Input/Enrolled.data"));
+			String str;
+			while((str = in.readLine()) != null){
+				if(str.startsWith("#"))
+					continue;
+				stat.execute("INSERT INTO Enrolled VALUES (" + str + ")");
+			}
+			in.close();
+		} catch (SQLException e) {
+			while(e != null){
+				e.printStackTrace();
+				e = e.getNextException();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -133,9 +151,6 @@ public class proj3 {
 		FileInputStream in = new FileInputStream("Input/jdbc.properties");
 		props.load(in);
 		in.close();
-		
-		//System.setProperty("oracle.net.tns_admin","/p/oracle10g/network/admin");
-		//connection = DriverManager.getConnection("jdbc:oracle:thin:@csora","gbrinzea","W24ZK4aw");
 		
 		String drivers = props.getProperty("connection.driver_class");
 		if(drivers != null)

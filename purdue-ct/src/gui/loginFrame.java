@@ -137,7 +137,7 @@ public class loginFrame extends JFrame {
 								table = "FACULTY";
 						}
 					}
-					String query = "select PASSWORD, NAME" +
+					String query = "select PASSWORD, NAME, SID" +
 							" from " + table +
 							" where USERNAME='" + username + "'";
 					ResultSet rs = stat.executeQuery(query);
@@ -145,10 +145,11 @@ public class loginFrame extends JFrame {
 					while (rs.next()) {
 						String checkPass = rs.getString("PASSWORD");
 						String name = rs.getString("NAME");
+						int sid = rs.getInt("SID");
 						if(Arrays.equals(checkPass.toCharArray(), password)){
 							wrong = false;
 							dispose();
-							toolsFrame frame = new toolsFrame(conn, name);
+							toolsFrame frame = new toolsFrame(conn, name, sid);
 							frame.setVisible(true);
 							break;
 						}
