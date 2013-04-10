@@ -136,6 +136,12 @@ public class facultyToolsFrame extends JFrame {
 		contentPane.add(separator_4, gbc_separator_4);
 		
 		JButton btnCreateEvaluation = new JButton("Create Evaluation");
+		btnCreateEvaluation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				createEvaluationFrame frame = new createEvaluationFrame(conn, fid);
+				frame.setVisible(true);
+			}
+		});
 		GridBagConstraints gbc_btnCreateEvaluation = new GridBagConstraints();
 		gbc_btnCreateEvaluation.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCreateEvaluation.insets = new Insets(0, 0, 5, 0);
@@ -166,6 +172,72 @@ public class facultyToolsFrame extends JFrame {
 		contentPane.add(separator_6, gbc_separator_6);
 		
 		JButton btnReportOfClass = new JButton("Report of Class");
+		btnReportOfClass.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent args0) {
+				try {
+					Statement stat = conn.createStatement();
+					//#cid, 'name', 'semester', year, meets_at, 'room', fid
+					HashMap<String, ArrayList<String>> data = new HashMap<String, ArrayList<String>>();
+					String query = "select NAME, MEETS_AT, ROOM, CID" + 
+							" from CLASS" +
+							" where FID=" + fid;
+					ResultSet rs = stat.executeQuery(query);
+					while(rs.next()){
+						ArrayList<String> subdata = new ArrayList<String>();
+						String name = rs.getString("NAME");
+						String meetsAt = rs.getTime("MEETS_AT").toString().substring(0, 5);
+						String room = rs.getString("ROOM");
+						String cid = rs.getString("CID");
+						subdata.add(name);
+						subdata.add(meetsAt);
+						subdata.add(room);
+						subdata.add(cid);
+						data.put(name, subdata);
+					}
+					String[] cols = {"Class Name", "Meets at", "Room", "# of Students", "# of Evaluations"};
+					String[][]temp = new String[data.size()][5];
+					int i = 0;
+					for(String key : data.keySet()){
+						query = "select COUNT(SID)" + 
+								" from ENROLLED, CLASS" +
+								" where FID=" + fid +
+								" and CLASS.CID=ENROLLED.CID" + 
+								" and CLASS.CID=" + data.get(key).get(3);
+						rs = stat.executeQuery(query);
+						while(rs.next()){
+							//System.out.println(rs.getInt("COUNT(SID)"));
+							data.get(key).add("" + rs.getInt("COUNT(SID)"));
+						}
+						query = "select COUNT(unique EID)" + 
+								" from CLASS, EVALUATION" +
+								" where FID=" + fid +
+								" and CLASS.CID=EVALUATION.CID" + 
+								" and CLASS.CID=" + data.get(key).get(3);
+						rs = stat.executeQuery(query);
+						while(rs.next()){
+							//System.out.println(rs.getInt(1));
+							data.get(key).add("" + rs.getInt(1));
+						}
+						ArrayList<String> subdata = data.get(key);
+						for(int j = 0; j < subdata.size(); j++){
+							System.out.println(subdata.get(j));
+							if(j == 3)
+								continue;
+							if(j > 3){
+								temp[i][j-1] = subdata.get(j);
+							}else{
+								temp[i][j] = subdata.get(j);
+							}
+						}
+						i++;
+					}
+					tableFrame frame = new tableFrame(temp, cols);
+					frame.setVisible(true);
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			}
+		});
 		GridBagConstraints gbc_btnReportOfClass = new GridBagConstraints();
 		gbc_btnReportOfClass.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnReportOfClass.insets = new Insets(0, 0, 5, 0);
@@ -189,14 +261,14 @@ public class facultyToolsFrame extends JFrame {
 					String query = "select CLASS.CID, NAME, SEMESTER, YEAR, MEETS_AT, ROOM, ENROLLED.SID" + 
 							" from CLASS, ENROLLED" +
 							" where FID=" + fid +
-							"AND ENROLLED.CID=CLASS.CID";
+							" and ENROLLED.CID=CLASS.CID";
 					ResultSet rs = stat.executeQuery(query);
 					String[] cols = {"Class Name", "Semester", "Year", "Meets at", "Room", "Student Name", "Grade"};
 					ArrayList<String[]> data = new ArrayList<String[]>();
 					while(rs.next()){
 						String[] subData = {rs.getString("NAME"), rs.getString("SEMESTER"),
 								"" + rs.getInt("YEAR"), rs.getTime("MEETS_AT").toString().substring(0,5),
-								rs.getString("ROOM"), "" + rs.getInt("SID")};
+								rs.getString("ROOM"), "" + rs.getInt("SID"), "" + rs.getInt("CID")};
 						data.add(subData);
 					}
 					String[][] temp = new String[data.size()][7];
@@ -205,7 +277,7 @@ public class facultyToolsFrame extends JFrame {
 								" from STUDENTS" +
 								" where SID=" + data.get(i)[5];
 						rs = stat.executeQuery(query);
-						for(int j = 0; j < data.get(i).length; j++)
+						for(int j = 0; j < data.get(i).length-1; j++)
 							temp[i][j] = data.get(i)[j];
 						while(rs.next()){
 							temp[i][5] = rs.getString("NAME");
@@ -216,15 +288,14 @@ public class facultyToolsFrame extends JFrame {
 						String sid = data.get(i)[5];
 						query = "select CID, WEIGHT, GRADE" + 
 								" from EVALUATION" +
-								" where SID=" + sid;
-						System.out.println(query);
+								" where SID=" + sid +
+								" and CID=" + data.get(i)[6];
 						rs = stat.executeQuery(query);
 						while(rs.next()){
 							int classNum = rs.getInt("CID");
 							double weight = rs.getInt("WEIGHT");
 							double score = rs.getInt("GRADE");
 							String lookup = classNum + " " + sid;
-							System.out.println(lookup);
 							if(finalScores.containsKey(lookup)){
 								double oldScore = finalScores.remove(lookup);
 								finalScores.put(lookup, oldScore + (score * (weight / 100)));
@@ -234,7 +305,6 @@ public class facultyToolsFrame extends JFrame {
 						}
 					}
 					for(String key : finalScores.keySet()){
-						System.out.println(key + " " + finalScores.get(key));
 						String[] keyInfo = key.split(" ");
 						query = "select NAME" +
 								" from CLASS" +
