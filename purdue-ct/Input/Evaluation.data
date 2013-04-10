@@ -1,12 +1,13 @@
 #eid, cid, 'type', weight, deadline, sid, 'grade'
-1, 1, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 'A'
-2, 2, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 'B'
-3, 3, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 'C'
-4, 4, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 'D'
-5, 5, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 'A'
-6, 6, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 'F'
-7, 7, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 'B'
-8, 8, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 'C'
-9, 2, 'Midterm Exam', 20, to_date('24-04-2013', 'DD-MM-YYYY'), 2, 'A'
-10, 3, 'Quiz', 10, to_date('12-02-2013', 'DD-MM-YYYY'), 2, 'B'
-11, 3, 'Quiz', 10, to_date('12-02-2013', 'DD-MM-YYYY'), 2, 'B'
+1, 1, 'Midterm Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 0
+1, 1, 'Final Exam', 70, to_date('24-04-2013', 'DD-MM-YYYY'), 1, 100
+2, 2, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 30
+3, 3, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 40
+4, 4, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 50
+5, 5, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 60
+6, 6, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 70
+7, 7, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 80
+8, 8, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 90
+9, 2, 'Midterm Exam', 20, to_date('24-04-2013', 'DD-MM-YYYY'), 2, 10
+10, 3, 'Quiz', 10, to_date('12-02-2013', 'DD-MM-YYYY'), 2, 10
+11, 3, 'Quiz', 10, to_date('12-02-2013', 'DD-MM-YYYY'), 2, 20

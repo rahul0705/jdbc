@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -193,22 +194,43 @@ public class studentToolsFrame extends JFrame {
 							" where SID=" + sid;
 					ResultSet rs = stat.executeQuery(query);
 					ArrayList<String[]> data = new ArrayList<String[]>();
+					ArrayList<Integer> classes = new ArrayList<Integer>();
 					String[] cols = {"Class Name", "Type", "Weight", "Grade"};
 					while (rs.next()) {
 						String[] subData = {"" + rs.getInt("CID"), rs.getString("TYPE"),
-								"" + rs.getInt("WEIGHT"), rs.getString("GRADE"),};
+								"" + rs.getInt("WEIGHT"), "" + rs.getInt("GRADE"),};
+						if(!classes.contains(rs.getInt("CID")))
+							classes.add(rs.getInt("CID"));
 						data.add(subData);
 					}
-					String[][] temp = new String[data.size()][4];
+					String[][] temp = new String[data.size()+classes.size()][4];
+					HashMap<Integer, Double> finalScores = new HashMap<Integer, Double>();
 					for(int i = 0; i < data.size(); i++){
 						query = "select NAME" +
 								" from CLASS" +
 								" where CID=" + data.get(i)[0];
+						int classNum = Integer.parseInt(data.get(i)[0]);
+						double weight = (double) Integer.parseInt(data.get(i)[2]);
+						double score = (double) Integer.parseInt(data.get(i)[3]);
+						if(finalScores.containsKey(classNum)){
+							System.out.println("exisits");
+							finalScores.put(classNum, finalScores.get(classNum) + (score * (weight / 100)));
+						}else{
+							finalScores.put(classNum, score * (weight / 100));
+						}
 						rs = stat.executeQuery(query);
 						while(rs.next()){
 							data.get(i)[0] = rs.getString("NAME");
 						}
 						temp[i] = data.get(i);
+					}
+					int i = 0;
+					for (Integer key : finalScores.keySet()) {
+					    temp[data.size() + i][0] = data.get(i)[0];
+					    temp[data.size() + i][1] = "Current Grade";
+					    temp[data.size() + i][2] = "100";
+					    temp[data.size() + i][3] = finalScores.get(key).toString();
+					    i++;
 					}
 					tableFrame frame = new tableFrame(temp, cols);
 					frame.setVisible(true);
