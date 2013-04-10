@@ -3,7 +3,4 @@
 2, 'cs426', 'spring', 2013, to_date('04:30','HH:MI'), 'HASS G060', 2
 3, 'cs448', 'spring', 2013, to_date('09:30','HH:MI'), 'LWSN B155', 7
 4, 'cs490', 'spring', 2013, to_date('08:30','HH:MI'), 'LWSN B143', 5
-5, 'cs491', 'spring', 2013, to_date('08:30','HH:MI'), 'LWSN B143', 5
-6, 'cs492', 'spring', 2013, to_date('08:30','HH:MI'), 'LWSN B143', 5
-7, 'cs493', 'spring', 2013, to_date('08:30','HH:MI'), 'LWSN B143', 5
-8, 'cs494', 'spring', 2013, to_date('08:30','HH:MI'), 'LWSN B143', 5
+5, 'cs252', 'fall', 2012, to_date('12:30','HH:MI'), 'LWSN B155', 9

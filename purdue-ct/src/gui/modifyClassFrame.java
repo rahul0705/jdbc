@@ -36,7 +36,7 @@ public class modifyClassFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					createClassFram frame = new createClassFram();
+					ModifyClassFram frame = new ModifyClassFram();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,7 +46,7 @@ public class modifyClassFrame extends JFrame {
 	}*/
 
 	/**
-	 * Create the frame.
+	 * Modify the frame.
 	 */
 	public modifyClassFrame(final Connection conn, final int fid) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -157,8 +157,8 @@ public class modifyClassFrame extends JFrame {
 		contentPane.add(txtRoom, gbc_txtRoom);
 		txtRoom.setColumns(10);
 		
-		JButton btnCreate = new JButton("Create");
-		btnCreate.addActionListener(new ActionListener() {
+		JButton btnModify = new JButton("Modify");
+		btnModify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent args0) {
 				String cid = txtClassid.getText();
 				String name = "'" + txtClassname.getText() + "'";
@@ -177,10 +177,10 @@ public class modifyClassFrame extends JFrame {
 				dispose();
 			}
 		});
-		GridBagConstraints gbc_btnCreate = new GridBagConstraints();
-		gbc_btnCreate.gridx = 1;
-		gbc_btnCreate.gridy = 6;
-		contentPane.add(btnCreate, gbc_btnCreate);
+		GridBagConstraints gbc_btnModify = new GridBagConstraints();
+		gbc_btnModify.gridx = 1;
+		gbc_btnModify.gridy = 6;
+		contentPane.add(btnModify, gbc_btnModify);
 	}
 
 }
