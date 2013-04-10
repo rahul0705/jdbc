@@ -149,7 +149,7 @@ public class loginFrame extends JFrame {
 						if(Arrays.equals(checkPass.toCharArray(), password)){
 							wrong = false;
 							dispose();
-							toolsFrame frame = new toolsFrame(conn, name, sid);
+							studentToolsFrame frame = new studentToolsFrame(conn, name, sid);
 							frame.setVisible(true);
 							break;
 						}

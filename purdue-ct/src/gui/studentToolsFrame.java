@@ -16,13 +16,14 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
-public class toolsFrame extends JFrame {
+public class studentToolsFrame extends JFrame {
 	private JPanel contentPane;
 
 	/**
@@ -44,16 +45,16 @@ public class toolsFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public toolsFrame(final Connection conn, String name, final int sid) {
+	public studentToolsFrame(final Connection conn, String name, final int sid) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 300, 200);
+		setBounds(100, 100, 300, 225);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 
 		JSeparator separator_3 = new JSeparator();
@@ -78,6 +79,39 @@ public class toolsFrame extends JFrame {
 		contentPane.add(separator, gbc_separator);
 
 		JButton btnCalendarOfEvaluations = new JButton("Calendar of Evaluations");
+		btnCalendarOfEvaluations.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent args0) {
+				try {
+					Statement stat = conn.createStatement();
+					String query = "select CID, TYPE, WEIGHT, DEADLINE" + 
+							" from EVALUATION" +
+							" where SID=" + sid;
+					ResultSet rs = stat.executeQuery(query);
+					ArrayList<String[]> data = new ArrayList<String[]>();
+					String[] cols = {"Class Name", "Type", "Weight", "DEADLINE"};
+					while (rs.next()) {
+						String[] subData = {"" + rs.getInt("CID"), rs.getString("TYPE"),
+								"" + rs.getInt("WEIGHT"), "" + rs.getDate("DEADLINE"),};
+						data.add(subData);
+					}
+					String[][] temp = new String[data.size()][4];
+					for(int i = 0; i < data.size(); i++){
+						query = "select NAME" +
+								" from CLASS" +
+								" where CID=" + data.get(i)[0];
+						rs = stat.executeQuery(query);
+						while(rs.next()){
+							data.get(i)[0] = rs.getString("NAME");
+						}
+						temp[i] = data.get(i);
+					}
+					tableFrame frame = new tableFrame(temp, cols);
+					frame.setVisible(true);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		GridBagConstraints gbc_btnCalendarOfEvaluations = new GridBagConstraints();
 		gbc_btnCalendarOfEvaluations.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCalendarOfEvaluations.insets = new Insets(0, 0, 5, 0);
@@ -159,19 +193,18 @@ public class toolsFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					Statement stat = conn.createStatement();
-					String query = "select CID, TYPE, WEIGHT, DEADLINE, GRADE" + 
+					String query = "select CID, TYPE, WEIGHT, GRADE" + 
 							" from EVALUATION" +
 							" where SID=" + sid;
 					ResultSet rs = stat.executeQuery(query);
 					ArrayList<String[]> data = new ArrayList<String[]>();
-					String[] cols = {"Class Name", "Type", "Weight", "Deadline", "Grade"};
+					String[] cols = {"Class Name", "Type", "Weight", "Grade"};
 					while (rs.next()) {
 						String[] subData = {"" + rs.getInt("CID"), rs.getString("TYPE"),
-								"" + rs.getInt("WEIGHT"), "" + rs.getDate("DEADLINE"),
-								rs.getString("GRADE"),};
+								"" + rs.getInt("WEIGHT"), rs.getString("GRADE"),};
 						data.add(subData);
 					}
-					String[][] temp = new String[data.size()][5];
+					String[][] temp = new String[data.size()][4];
 					for(int i = 0; i < data.size(); i++){
 						query = "select NAME" +
 								" from CLASS" +
@@ -190,10 +223,33 @@ public class toolsFrame extends JFrame {
 			}
 		});
 		GridBagConstraints gbc_btnMyGrades = new GridBagConstraints();
+		gbc_btnMyGrades.insets = new Insets(0, 0, 5, 0);
 		gbc_btnMyGrades.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnMyGrades.gridx = 0;
 		gbc_btnMyGrades.gridy = 7;
 		getContentPane().add(btnMyGrades, gbc_btnMyGrades);
+		
+		JButton btnLogout = new JButton("Logout");
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(studentToolsFrame.this, "Logout Successful");
+				loginFrame frame = new loginFrame(conn);
+				frame.setVisible(true);
+				dispose();
+			}
+		});
+		GridBagConstraints gbc_btnLogout = new GridBagConstraints();
+		gbc_btnLogout.insets = new Insets(0, 0, 5, 0);
+		gbc_btnLogout.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnLogout.gridx = 0;
+		gbc_btnLogout.gridy = 8;
+		contentPane.add(btnLogout, gbc_btnLogout);
+		
+		JSeparator separator_4 = new JSeparator();
+		GridBagConstraints gbc_separator_4 = new GridBagConstraints();
+		gbc_separator_4.gridx = 0;
+		gbc_separator_4.gridy = 9;
+		contentPane.add(separator_4, gbc_separator_4);
 	}
 
 }

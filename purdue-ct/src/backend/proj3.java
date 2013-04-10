@@ -121,7 +121,7 @@ public class proj3 {
 			Statement stat = conn.createStatement();
 			String drop = "DROP TABLE EVALUATION";
 			stat.execute(drop);
-			String create = "CREATE TABLE EVALUATION (cid INT, type VARCHAR(30), weight INT, deadline DATE, sid INT, grade CHAR)";
+			String create = "CREATE TABLE EVALUATION (eid INT, cid INT, type VARCHAR(30), weight INT, deadline DATE, sid INT, grade CHAR)";
 			stat.execute(create);
 			BufferedReader in = new BufferedReader(new FileReader("Input/Evaluation.data"));
 			String str;
