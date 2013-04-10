@@ -115,7 +115,7 @@ public class toolsFrame extends JFrame {
 					}
 					rs = stat.executeQuery(query);
 					ArrayList<String[]> data = new ArrayList<String[]>();
-					String[] cols = {"Class Name", "Semester", "Meets At", "Year", "Room", "FID"};
+					String[] cols = {"Class Name", "Semester", "Meets At", "Year", "Room", "Professor"};
 					while (rs.next()) {
 						String[] subData = {rs.getString("NAME"), rs.getString("SEMESTER"),
 								rs.getTime("MEETS_AT").toString().substring(0, 5), "" + rs.getInt("YEAR"),
@@ -133,7 +133,7 @@ public class toolsFrame extends JFrame {
 						}
 						temp[i] = data.get(i);
 					}
-					classFrame frame = new classFrame(temp, cols);
+					tableFrame frame = new tableFrame(temp, cols);
 					frame.setVisible(true);
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -155,6 +155,40 @@ public class toolsFrame extends JFrame {
 		contentPane.add(separator_2, gbc_separator_2);
 
 		JButton btnMyGrades = new JButton("My Grades");
+		btnMyGrades.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					Statement stat = conn.createStatement();
+					String query = "select CID, TYPE, WEIGHT, DEADLINE, GRADE" + 
+							" from EVALUATION" +
+							" where SID=" + sid;
+					ResultSet rs = stat.executeQuery(query);
+					ArrayList<String[]> data = new ArrayList<String[]>();
+					String[] cols = {"Class Name", "Type", "Weight", "Deadline", "Grade"};
+					while (rs.next()) {
+						String[] subData = {"" + rs.getInt("CID"), rs.getString("TYPE"),
+								"" + rs.getInt("WEIGHT"), "" + rs.getDate("DEADLINE"),
+								rs.getString("GRADE"),};
+						data.add(subData);
+					}
+					String[][] temp = new String[data.size()][5];
+					for(int i = 0; i < data.size(); i++){
+						query = "select NAME" +
+								" from CLASS" +
+								" where CID=" + data.get(i)[0];
+						rs = stat.executeQuery(query);
+						while(rs.next()){
+							data.get(i)[0] = rs.getString("NAME");
+						}
+						temp[i] = data.get(i);
+					}
+					tableFrame frame = new tableFrame(temp, cols);
+					frame.setVisible(true);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		GridBagConstraints gbc_btnMyGrades = new GridBagConstraints();
 		gbc_btnMyGrades.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnMyGrades.gridx = 0;

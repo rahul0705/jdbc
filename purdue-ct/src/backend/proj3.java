@@ -29,6 +29,7 @@ public class proj3 {
 		createFacultyTable(conn);
 		createClassTable(conn);
 		createEnrolledTable(conn);
+		createEvaluationTable(conn);
 		
 		loginFrame l = new loginFrame(conn);
 		l.setVisible(true);
@@ -50,16 +51,13 @@ public class proj3 {
 			}
 			in.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			while(e != null){
 				e.printStackTrace();
 				e = e.getNextException();
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -80,7 +78,6 @@ public class proj3 {
 			}
 			in.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			while(e != null){
 				e.printStackTrace();
 				e = e.getNextException();
@@ -105,6 +102,33 @@ public class proj3 {
 				if(str.startsWith("#"))
 					continue;
 				stat.execute("INSERT INTO CLASS VALUES (" + str + ")");
+			}
+			in.close();
+		} catch (SQLException e) {
+			while(e != null){
+				e.printStackTrace();
+				e = e.getNextException();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void createEvaluationTable(Connection conn){
+		try {
+			Statement stat = conn.createStatement();
+			String drop = "DROP TABLE EVALUATION";
+			stat.execute(drop);
+			String create = "CREATE TABLE EVALUATION (cid INT, type VARCHAR(30), weight INT, deadline DATE, sid INT, grade CHAR)";
+			stat.execute(create);
+			BufferedReader in = new BufferedReader(new FileReader("Input/Evaluation.data"));
+			String str;
+			while((str = in.readLine()) != null){
+				if(str.startsWith("#"))
+					continue;
+				stat.execute("INSERT INTO EVALUATION VALUES (" + str + ")");
 			}
 			in.close();
 		} catch (SQLException e) {

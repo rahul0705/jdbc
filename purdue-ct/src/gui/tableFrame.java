@@ -11,7 +11,7 @@ import javax.swing.JTable;
 import java.awt.GridBagConstraints;
 import javax.swing.JScrollPane;
 
-public class classFrame extends JFrame {
+public class tableFrame extends JFrame {
 
 	private JScrollPane contentPane;
 	private JTable table;
@@ -35,7 +35,7 @@ public class classFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public classFrame(String[][] data, String[] col) {
+	public tableFrame(String[][] data, String[] col) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 600, 300);
 		contentPane = new JScrollPane();
