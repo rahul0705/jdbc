@@ -213,7 +213,6 @@ public class studentToolsFrame extends JFrame {
 						double weight = (double) Integer.parseInt(data.get(i)[2]);
 						double score = (double) Integer.parseInt(data.get(i)[3]);
 						if(finalScores.containsKey(classNum)){
-							System.out.println("exisits");
 							double oldScore = finalScores.remove(classNum);
 							finalScores.put(classNum, oldScore + (score * (weight / 100)));
 						}else{

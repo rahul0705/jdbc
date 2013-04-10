@@ -8,6 +8,9 @@
 6, 6, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 70
 7, 7, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 80
 8, 8, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 1, 90
+8, 8, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 4, 90
+8, 8, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 8, 90
+8, 8, 'Final Exam', 30, to_date('24-03-2013', 'DD-MM-YYYY'), 5, 90
 9, 2, 'Midterm Exam', 20, to_date('24-04-2013', 'DD-MM-YYYY'), 2, 10
 10, 3, 'Quiz', 10, to_date('12-02-2013', 'DD-MM-YYYY'), 2, 10
 11, 3, 'Quiz', 10, to_date('12-02-2013', 'DD-MM-YYYY'), 2, 20
