@@ -214,19 +214,27 @@ public class studentToolsFrame extends JFrame {
 						double score = (double) Integer.parseInt(data.get(i)[3]);
 						if(finalScores.containsKey(classNum)){
 							System.out.println("exisits");
-							finalScores.put(classNum, finalScores.get(classNum) + (score * (weight / 100)));
+							double oldScore = finalScores.remove(classNum);
+							finalScores.put(classNum, oldScore + (score * (weight / 100)));
 						}else{
 							finalScores.put(classNum, score * (weight / 100));
 						}
 						rs = stat.executeQuery(query);
-						while(rs.next()){
-							data.get(i)[0] = rs.getString("NAME");
-						}
 						temp[i] = data.get(i);
+						while(rs.next()){
+							temp[i][0] = rs.getString("NAME");
+						}
 					}
 					int i = 0;
 					for (Integer key : finalScores.keySet()) {
-					    temp[data.size() + i][0] = data.get(i)[0];
+						query = "select NAME" +
+								" from CLASS" +
+								" where CID=" + key;
+						rs = stat.executeQuery(query);
+						temp[i] = data.get(i);
+						while(rs.next()){
+							temp[data.size() + i][0] = rs.getString("NAME");
+						}
 					    temp[data.size() + i][1] = "Current Grade";
 					    temp[data.size() + i][2] = "100";
 					    temp[data.size() + i][3] = finalScores.get(key).toString();
