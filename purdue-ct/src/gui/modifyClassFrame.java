@@ -167,7 +167,6 @@ public class modifyClassFrame extends JFrame {
 				String meetsAt = "to_date('" + txtMeetsat.getText() + "','HH:MI')";
 				String room = "'" + txtRoom.getText() + "'";
 				String query = "UPDATE CLASS SET NAME=" + name + ", SEMESTER=" + semester + ", YEAR=" + year + ", MEETS_AT=" + meetsAt + ", ROOM=" + room + " where CID=" + cid + " and FID=" + fid;
-				System.out.println(query);
 				try{
 					Statement stat = conn.createStatement();
 					stat.executeUpdate(query);

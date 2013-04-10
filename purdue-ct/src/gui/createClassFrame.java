@@ -167,7 +167,6 @@ public class createClassFrame extends JFrame {
 				String meetsAt = "to_date('" + txtMeetsat.getText() + "','HH:MI')";
 				String room = "'" + txtRoom.getText() + "'";
 				String query = "INSERT INTO CLASS VALUES (" + cid + ", "+ name + ", "+ semester + ", "+ year + ", "+ meetsAt + ", "+ room + ", " + fid + ")";
-				System.out.println(query);
 				try{
 					Statement stat = conn.createStatement();
 					stat.execute(query);

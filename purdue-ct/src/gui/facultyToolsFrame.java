@@ -217,7 +217,6 @@ public class facultyToolsFrame extends JFrame {
 								" and CLASS.CID=" + data.get(key).get(3);
 						rs = stat.executeQuery(query);
 						while(rs.next()){
-							//System.out.println(rs.getInt("COUNT(SID)"));
 							data.get(key).add("" + rs.getInt("COUNT(SID)"));
 						}
 						query = "select COUNT(unique EID)" + 
@@ -227,12 +226,10 @@ public class facultyToolsFrame extends JFrame {
 								" and CLASS.CID=" + data.get(key).get(3);
 						rs = stat.executeQuery(query);
 						while(rs.next()){
-							//System.out.println(rs.getInt(1));
 							data.get(key).add("" + rs.getInt(1));
 						}
 						ArrayList<String> subdata = data.get(key);
 						for(int j = 0; j < subdata.size(); j++){
-							System.out.println(subdata.get(j));
 							if(j == 3)
 								continue;
 							if(j > 3){
