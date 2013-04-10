@@ -107,7 +107,6 @@ public class assignToClassFrame extends JFrame {
 					}
 					if(canEdit){
 						stat.execute("INSERT INTO Enrolled VALUES (" + str + ")");
-						JOptionPane.showMessageDialog(assignToClassFrame.this, "Success");
 					}
 					else
 						JOptionPane.showMessageDialog(assignToClassFrame.this, "You are not the instructor for this class");

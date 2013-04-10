@@ -19,7 +19,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class createClassFrame extends JFrame {
+public class modifyClassFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtClassid;
@@ -48,7 +48,7 @@ public class createClassFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public createClassFrame(final Connection conn, final int fid) {
+	public modifyClassFrame(final Connection conn, final int fid) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -166,13 +166,13 @@ public class createClassFrame extends JFrame {
 				String year = txtYear.getText();
 				String meetsAt = "to_date('" + txtMeetsat.getText() + "','HH:MI')";
 				String room = "'" + txtRoom.getText() + "'";
-				String query = "INSERT INTO CLASS VALUES (" + cid + ", "+ name + ", "+ semester + ", "+ year + ", "+ meetsAt + ", "+ room + ", " + fid + ")";
+				String query = "UPDATE CLASS SET NAME=" + name + ", SEMESTER=" + semester + ", YEAR=" + year + ", MEETS_AT=" + meetsAt + ", ROOM=" + room + " where CID=" + cid + " and FID=" + fid;
 				System.out.println(query);
 				try{
 					Statement stat = conn.createStatement();
-					stat.execute(query);
+					stat.executeUpdate(query);
 				}catch(SQLException e){
-					JOptionPane.showMessageDialog(createClassFrame.this, "Failure");
+					JOptionPane.showMessageDialog(modifyClassFrame.this, "Failure");
 					e.printStackTrace();
 				}
 				dispose();

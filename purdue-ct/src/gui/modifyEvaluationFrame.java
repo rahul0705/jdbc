@@ -21,7 +21,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class createEvaluationFrame extends JFrame {
+public class modifyEvaluationFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtEvaluationid;
@@ -49,7 +49,7 @@ public class createEvaluationFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public createEvaluationFrame(final Connection conn, final int fid) {
+	public modifyEvaluationFrame(final Connection conn, final int fid) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -150,21 +150,12 @@ public class createEvaluationFrame extends JFrame {
 				String type = "'" + txtType.getText() + "'";
 				String weight = txtWeight.getText();
 				String deadline = "to_date('" + txtDeadline.getText() + "','MM/DD/YYYY')";
-				String str = "INSERT INTO EVALUATION VALUES (" + eid + ", "+ cid + ", "+ type + ", "+ weight + ", "+ deadline + ", ";
+				String query = "UPDATE EVALUATION SET CID=" + cid + ", TYPE=" + type + ", WEIGHT=" + weight + ", DEADLINE=" + deadline + "where EID=" + eid;
 				try{
 					Statement stat = conn.createStatement();
-					String query = "select SID" +
-							" from ENROLLED" + 
-							" where CID=" + cid;
-					ResultSet rs = stat.executeQuery(query);
-					ArrayList<String> queries = new ArrayList<String>();
-					while(rs.next()){
-						queries.add(str + "" + rs.getInt("SID") + ", 0)");
-					}
-					for(int i = 0; i < queries.size(); i++)
-						stat.execute(queries.get(i));
+					stat.executeUpdate(query);
 				}catch(SQLException e){
-					JOptionPane.showMessageDialog(createEvaluationFrame.this, "Failure");
+					JOptionPane.showMessageDialog(modifyEvaluationFrame.this, "Failure");
 					e.printStackTrace();
 				}
 				dispose();

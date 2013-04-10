@@ -100,6 +100,12 @@ public class facultyToolsFrame extends JFrame {
 		contentPane.add(separator_2, gbc_separator_2);
 		
 		JButton btnModifyClass = new JButton("Modify Class");
+		btnModifyClass.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent args0) {
+				modifyClassFrame frame = new modifyClassFrame(conn, fid);
+				frame.setVisible(true);
+			}
+		});
 		GridBagConstraints gbc_btnModifyClass = new GridBagConstraints();
 		gbc_btnModifyClass.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnModifyClass.insets = new Insets(0, 0, 5, 0);
@@ -157,6 +163,12 @@ public class facultyToolsFrame extends JFrame {
 		contentPane.add(separator_5, gbc_separator_5);
 		
 		JButton btnModifyEvaluation = new JButton("Modify Evaluation");
+		btnModifyEvaluation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modifyEvaluationFrame frame = new modifyEvaluationFrame(conn, fid);
+				frame.setVisible(true);
+			}
+		});
 		GridBagConstraints gbc_btnModifyEvaluation = new GridBagConstraints();
 		gbc_btnModifyEvaluation.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnModifyEvaluation.insets = new Insets(0, 0, 5, 0);
